@@ -1,0 +1,793 @@
+Release notes for 1.4.4 - Blitzkrieg
+======================================
+Ratel Server
+======================================
+1. Multi-user Websocket UI improvements
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.4.3 - Blitzkrieg
+======================================
+Badger and Ratel Server
+======================================
+Improvements
+--------------------------------------
+======================================
+Badger and Ratel Server
+======================================
+1. Added seperate capture options for files compiled in mingw and for clang. Some windows executables use a different technique to stdout. Thus 'mingw' compiled files might not give full output within some windows executables such as 'explorer.exe' or 'runtimebroker.exe'. Clang compiled files should work in all windows executables.
+2. Updates to licensing algorithm
+3. When 'memexec' executed, the ratel server checks if the file is compiled in mingw or clang and captures stdout depending on the compiler
+4. Updated API pdf to v1.4.3
+5. Updates to sleep masking API
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.4.1 - Blitzkrieg
+======================================
+Badger and Ratel Server
+======================================
+Improvements
+--------------------------------------
+======================================
+Badger and Ratel Server
+======================================
+
+1. Seperated Socks5, reverse port forwarding and generic Mutex to increase socks and reverse port forwarding speed data parsing speed
+2. Updates to the 'memexec' command as per customer request
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.4 - Blitzkrieg
+======================================
+Badger and Ratel Server
+======================================
+Additions
+--------------------------------------
+======================================
+Badger and Ratel Server
+======================================
+
+1. Added Socks5 with full support for DNS resolution, authentication and UDP
+2. Updated Socks to be embedded with the badger's main request instead of being standalone. Badger can now use socks along with Sleep Mask. Removed socks_profile and socks_profile_start command as socks is now built-in. Socks does not get restored if the server is restarted
+3. Renamed 'socks_start' to just 'socks'. The 'socks' command can start either socks4a or socks5 with optional username/password support
+4. Added feature to execute any console executable without creating a new process with the 'memexec' command. Data is extracted via in-proc-console-reader
+5. Created a custom in-proc-console-reader for sharpinline and memexec
+6. Added evasion for EtwTI sensors
+7. Improved command-line parsing for sharpinline, coffexec, loadr and other arguments which execute C#/BOF or reflective DLLs
+8. Improved remote port forwarding
+9. Fixed DNS Over Https bugs
+10. Updated custom encryption algorithm
+11. Removed '-update' option from the commandline option. Latest release information is now shown in the https://bruteratel.com/tabs/download/ page and can be downloaded only from there
+
+======================================
+Commander
+======================================
+1. Added 'note' feature to Commander
+2. Updated the parsing of response headers in the Payload Profiler
+3. Added 'clear_q' command to badger's terminal
+4. Fixed title command bug in badger's new Window
+5. Badger's external IP will show CF-Connecting-IP or X-Forwarded-For in the UI if added
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.3 - Resurgence
+======================================
+Badger and Ratel Server
+======================================
+
+Additions
+--------------------------------------
+1. Badger provides extended malleability with custom response types and headers. Server can respond differently when a command needs to be sent, and a different response when there is no command in queue. Custom response headers can also be added alongside request headers. The requests/responses and headers are fully compatible with information extracted from Burpsuite
+2. Added rportfwd command for reverse port forwarding
+3. X-forwarded-for headers are now written for authenticated badgers in web.log
+4. Renamed 'extra_headers' to 'request_headers' and 'response_headers' in the profile. Added option to add response headers when replying to the post request of a badger via the server. Only applicable for HTTP
+5. Added autosave active configuration feature in ratel server to save everything automatically when you want to kill and start the server without losing any data
+6. Added DNS Interval to change the frequency at which packets of DNS for a single response are sent to the server. This can also be configured when creating a listener/payload profile to avoid per connection detection which is seperate from badger sleep and jitter
+7. Converted badger to single threaded for quick running tasks unlike earlier where every task was run in a seperate thread
+8. Added dns resolver for 'icmp_ping' and 'portscan' command
+9. Added evasions for Elastic and ATP local shellcode thread detections
+10. Badger's shellcode (stage_core) does not use base64 anymore to store the server configuration
+11. Added Tracker for all commands. All command output is now parsed in the server instead of on the badger
+12. Removed 'ret' shellcodes. Only RtlExitUserThread and WaitForSingleObject exists now
+13. Removed saving of registers with the push command. No registers are saved and only stack alignment is performed because registers are not stomped anymore
+14. Removed default Rc4 key from 'bYXJm/3#M?:XyMBF' everywhere in the code
+15. Removed all known ror13 string hashes. Replaced all ror13 algorithm with custom function
+16. Removed all strings in the badger's memory. Size of shellcode is now 210kb
+17. Updated socks to make it faster. Socks encrypted data uses less rounds of encryption and a seperate thread to work asynchronously with the main thread which generating TCP packets and encrypted data at the same time
+18. Updated encryption algorithm and licensing for BRc4. There is no .brauth file now starting from v1.3 release
+19. Replaced 'TerminateThread' with 'NtTerminateThread'
+20. Replaced 'OpenProcessToken' with 'OpenThreadToken' in userinfo command
+21. Screenshot command updated for more opsec
+22. Added Sample PowerShell loader for the badger in adhoc_scripts directory
+
+======================================
+Commander
+======================================
+
+Additions
+--------------------------------------
+1. Added local path tab completion support
+2. Added edit option in the 'Listener Actions' context menu for DOH and HTTPS listeners
+3. Added search option for files and folders in File Explorer
+4. Added folder icons to File Explorer
+5. Added multi-select download and delete option in File Explorer
+6. Added upload file, create and delete folder option in File Explorer
+7. Added copy file/folder name option in File Explorer
+8. Downloads tab is now fixed in the UI next to the creds tab and autoupdates itself on every chunk downloaded. UI shows download status while files are being downloaded from the server
+9. Multiple files can be directly downloaded from the downloads tab irrespective of their size unlike earlier where the size was limited to 50mb from server to commander. The active download progress is also shown in the UI.
+10. Updated Addlistener, AddDOHListener and AddPayloadProfiler UI to show seperate tabs for malleability
+11. Commander and Ratel versions are now synced. Error pops up if different versions are used. Commander notifies user if the commander and server versions are different
+12. Commander shows internal IP information of the badger in the badger's tab
+13. Updated watchlist to show full server logs with colored output
+14. Core server logs are now stored in logs/watchlist.log unlike earlier where it was stored under date basis. Added detailed tracking for logs
+15. Added last check-in timer in Commander for badgers. Removed badger checkin in the status bar at the bottom of commander
+16. Updated formatting for all command output in Commander's terminal
+17. Added option to show TCP listener information in Commander
+18. The 'socks_profile' command validates a profile before sending the profile information to the badger. It auto adds 'auto-' if not supplied by the user
+19. Logs exported by Operator activity also adds the target hostname and username to the csv
+
+Bug Fixes and Improvements
+--------------------------------------
+1. Removed memhunt command
+2. Improved search in Commander for Process Manager
+3. Updated parsing of malleable profile in badger
+4. Replaced the term 'User' with 'Operators' everywhere
+5. Merged Shellcode context menus
+6. Fixed bug in the 'local_sessions' command to free unused buffer
+7. Fixed DOH bug where data was dropped if internet connectivity was down
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.2.7 - Scandinavian Defense
+======================================
+Badger
+======================================
+
+Additions
+--------------------------------------
+1. Changes made to shellcode to support service DLLs
+2. Changes made to C-sharp loader to support obfuscated C-sharp code with mangled PE headers
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.2.6 - Scandinavian Defense
+======================================
+Badger
+======================================
+
+Additions
+--------------------------------------
+1. Added scstop command to stop services over RPC. All services including Badger Services can be remotely stopped using the scstop command
+2. Optimized shellcode generation for badger and other modules. Size of the shellcode is reduced from 340kb to 240kb
+3. Updated sharpreflect to use the new shellcode generation technique so that it can load large C# executables quickly. Reduced the time for an 8MB C# file execution from 20 minutes to 2 seconds. (lol, yeah... some heavy optimizations there mate)
+4. Added shellcode optimization algorithm to stage and stageless payload both
+5. Downloading files from Commander is limited to files of 50Mb Size. Anything more than that should be downloaded via scp
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.2.5 - Scandinavian Defense
+======================================
+Badger
+======================================
+Minor Updates/Bug Fixes
+--------------------------------------
+1. Fixed Sleeping bug for Hunt-Sleeping-Beacons
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.2.4 - Scandinavian Defense
+======================================
+Badger
+======================================
+Minor Updates/Bug Fixes
+--------------------------------------
+1. Made changes to sharpreflect/psreflect to load C-sharp executables larger than 8MB
+2. Fixed a sharpreflect shellcode affecting BOFnet Dot Net code bug reported by (@TH3xACE - David Blais) on discord
+3. Fixed autosave bug for profiles.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.2.3 - Scandinavian Defense
+
+======================================
+Badger
+======================================
+
+Additions
+--------------------------------------
+1. Updates to the badger's sleeping mechanism to evade detections
+2. Updates to the badger's core to avoid Defender ATP ETWTI detections
+
+======================================
+Bug Fixes
+======================================
+1. Fixed a race condition bug on the ratel server where it could be Ddos'd with 200+ badgers in under 1 minute. This is now fixed and special thanks to @Sh0ck (Yann Faure), @pridwen (Justin Hocquel) for finding this bug. Additional thanks to @Gibdeon and @RandomVisitor on discord for support
+2. Fixed stress testing video can be found at https://www.youtube.com/watch?v=hX64nkSjYdY
+3. Fixed Dns Over Https bug for UDP packet drops by DNS Resolvers
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Release notes for 1.2 - Scandinavian Defense
+
+======================================
+Badger
+======================================
+
+Additions
+--------------------------------------
+1. Badger use a PIC which load a PE which uses custom built sections header built using a custom GCC compiler
+2. Badger auto detects mapped view virtual memory for stageless payloads allocated by the operator during the first execution and reuses allocated memory without having to allocate new memory during PIC execution. Operators no longer need to erase the allocated region by themselves. This avoids multiple relocations and helps with evasion when backed by a DLL module (module stomping)
+3. Staged and stageless badgers use a custom technique to find ntdll,kernel32 and kernelbase avoiding the traps in PEB and unhooks any and every EDR dll from memory to avoid IAT/EAT/PEB and Page Guard traps
+4. Updated antidebug techniques to stage_core and stage_zero via inline assembly
+5. Stack and Heap of the badger is encrypted during sleep
+6. Added set_coffargs and clear_coffargs commands. The set_coffargs can store upto 10 file buffers in the memory to be used alongside coffexec. These buffers are passed on as the first few arguments of the coffexec followed by the ones operator supplied manually
+7. Added BadgerGetBufferSize BOF API to extract the size of a buffer in memory
+8. Coffexec uses heap encryption and zeroing out of the allocated buffer by the operator's BOF
+9. Added sample bring your own injection techniques to BOF
+10. Added hardware hook patch to amsi and etw. Added setBreakpoint and removeBreakpoint command which can set hwbp on threads for selected addresses
+11. Added notification handler to the adhoc_scripts directory
+
+Improvements
+--------------------------------------
+1. Samdump command is an internal part of the badger and not a reflecitve module
+2. Sharpreflect gets injected as a standalone PIC instead of reflecitve DLL
+3. Improved the size of the stage_zero payload
+4. Updated badger_exports.h file
+5. Contact harvester and the Shadowclone command is a BOF and added to Brute-Ratel-C4-Community-Kit and the bofs directory in the package
+6. Removed 'MSCTFIME UI' and 'Default IME' from windowlist output
+7. Added option to unlink connected SMB with _stop_task_ command
+8. Crisis Monitor now displays timestamp for every output
+
+======================================
+Commander
+======================================
+Improvements
+--------------------------------------
+1. Updated QT to release v6.3
+2. Improved the Commander's memory usage to work in VM's with extreme low RAM
+3. Updated button themes for the Commander
+
+======================================
+Bug Fixes and Abandoned Support
+======================================
+1. Removed list_exports command
+2. Removed samdump reflective dll and added it as an internal part of the badger
+3. Removed shadowclone reflective dll and shared the source code and the BOF in the server_conf/bofs directory
+4. Removed contact-harvestor reflective dll and shared the source code and the BOF in the server_conf/bofs directory
+6. Removed Detect hook command as ntdll,kernel32 and kernelbase is bydefault unhooked everytime
+7. Removed patchetw command in support for hardware hooks
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.1 - Stoffel's Escape
+
+======================================
+Ratel Server
+======================================
+
+Additions
+--------------------------------------
+1. All payloads staged or stageless are by default encrypted with randomly generated keys
+2. The method of loading encrypted config file has also changed taking into consideration the Palo Alto blog and several detections which were built around the blog
+3. The encryption key is common for all stages (only stages) till the server is killed and started again. This means if a server is killed and started again, stage will need to be created again as the key in server is changed which is used for both arg and post data encryption/decryption
+4. Added Staging option to Listeners, that can generate a 7-8kb stage which fully utilize indirect syscalls. The staging option in listener can autostop itself after a certain stage count or can be disabled manually.
+5. Stages select their respective stage depending on the architecture they are being run on.
+6. Staging is only supported over HTTP/S
+
+Improvements
+--------------------------------------
+1. Modified saving of dynamically generated c2 profile with the 'Autosave' option, even if the server is not started with a C2 Profile
+
+======================================
+Badger
+======================================
+
+Additions
+--------------------------------------
+1. Added 'threads' command to list threads in a target process
+2. Added 'phantom_thread' command
+3. All payloads now support indirect syscalls(Stealth, default x64, x86 and x86 on Wow64)
+4. Badger's don't use bootstrapped reflective DLLs anymore contains a new shellcode
+5. The core of the badger and it's stage was re-written to hide several traces in memory following the Palo Alto blog.
+6. The execution technique for syscalls, shellcode execution and stage execution along with the encryption technique differs from all the previous releases. The encryption for the configuration is also changed now along with dynamic key generation
+7. Updated the way, position independent code is generated. Random registers are used everytime a payload is created.
+8. Added stealth payload type when generating payload which uses proxying of several WinAPI/NtAPI functions to avoid detections via Kernel Land EtwTI
+9. All badger's now load only required DLLs on initial execution unlike the previous releases where all DLLs were loaded on startup. Whenever a request is raised by the badger/stage to load a DLL, badger checks the PEB, if the DLL is already loaded to avoid calling LoadLibrary/LdrLoadDll. If the DLL is found in PEB, it's address address is returned from the LdrDataTableEntry, else LoadLibrary is proxied via gadget to avoid direct execution from the user allocated RX region.
+10. Badgers support full thread stack spoofing and not just the initial instruction pointer with stackbase. Start address and Stack of all badgers are by default spoofed on initial execution
+11. Added 3 sleep masking techniques which can be changed on the fly using the 'obfsleep' command or during the initial payload generation
+12. Updated sleeping technique to encrypt selected sensitive heap allocations during sleep. Badger uses custom heap which is managed and zeroed out before cleanup
+13. Coffexec also uses proxying of several function calls found while loading the object file. It also runs in a seperate thread
+14. Added BOFs for BadgerAlloc, BadgerFree, BadgerSetdebug. Updated Rc4 keys and encrypted string for exported BOF API names
+15. Added 'start_address' command to change the entrypoint of start address for APC sleep masking
+16. Keylogger is now a part of badger
+17. Added socks option as built-in instead of a reflective DLL like socksbridge. Socks also provides a option for burnable socks profile. This profile is auto-cleared upon exit of opsec reasons
+18. Socks also supports DNS Over Https
+19. Added 'memhook' command to modify the control flow of an executable memory address. This can be used to hook any address in memory or to even find and disable Environment.Exit for Sharpinline. Samples are provided in the download package
+20. The 'detect' command is renamed to 'detect_hooks' and auto detects hooks in ntdll, kernel32 and kernelbase.dll. The kernel32 and kernelbase.dll hook detections are only single jump based which might generate false positives
+
+Improvements
+--------------------------------------
+1. The Sharpreflect and Sharpinline uses indirect syscalls where required
+2. The 'screenshot' command can take screenshots of all desktops now instead of just the main desktop
+3. SMB and TCP reuse HANDLE/Sockets to send and recv data. New SMB and TCP connections for every pivot is not required anymore
+4. TCP listener stops listening on the listener port after a connection is received while still maintaining the active TCP connection
+5. ExitThread in SMB Badger now disconnects the SMB pipe before exiting the thread. This was an issue earlier when the SMB pipe stayed active even after the thread was exited. This is now fixed
+6. Shellcodes can now run from any address in memory as it saves and restores original stack during return
+7. Added new trackers to payloads to avoid sharing of payloads to non-brc4 users. This can be used to track down illegitimate use of payloads by users
+
+======================================
+Commander
+======================================
+
+Additions
+--------------------------------------
+1. Added multiple payload generation options when building badger's shellcode
+2. Commander also shows the thread ID in which the badger is running
+3. Added option to configure jitter and sleep options when building a listener or a payload to configure sleep time from the initial execution rather than having to depend on 'autoruns'
+4. Added download and delete options in File Explorer
+5. All downloads can be viewed using 'list_downloads' command unlike earlier where the full download status was shown on screen. The 'list_downloads' command shows active downloads with completed percentage. Downloads can be stopped with the 'stop_task' command. Shadowcloak downloads are shown under list_downloads command instead of showing the whole download activity on screen
+6. All tasks can now be stopped using 'stop_task' instead of seperate stop commands like stop_downloads or stop_tcplistener.
+7. All tasked commands show their thread and task ID when executed. This output is shown in grey color in Commander's Terminal
+8. Dcsync command's output is automatically parsed and added to the Credentials tab now. DCSync also supports syncing passwords from selected Domains using a user provided domain name
+9. Added option to change the color of badgers. Colors of both dead and active badgers can be changed which gets saved across sessions. Colors are not unique per operator and will affect all Operators using Commander. Options are available as to whether to set the color for text or background
+10. Added Several shortcut options to to the UI-> Alt+1, Alt+2, Alt+3, Ctrl+H, Ctrl+D, Ctrl+P, Alt+D, Alt+L, Ctrl+1, Ctrl+2, Ctrl+3
+
+Improvements
+--------------------------------------
+1. Renamed 'list_pivot' command to 'list_tcppivot' to not confuse it with listing all pivots
+2. Moved Switch Profile, Process Manager, File Explorer and Clickscript options to Arsenal
+3. Updated the dialogue to how badgers are saved. Users can selected highlited path from the payload saved dialogue
+4. Added better accessibility related settings for visibility enhancement
+5. Updated Process Manager to search processes in non-case-sensitive format
+
+======================================
+Bug Fixes and Abandoned Support
+======================================
+Removed injectable 'keylogger', 'socksbridge' and 'ldap_sentinel' in support for inline commands
+Removed 'pcinject' in support of the updated 'shinject_ex' command built specifically towards evasion. The 'shinject_ex' command contains a few new evasion techniques behind the scenes to hide injection traces before execution
+Removed 'change_wallpaper' and 'lock_input' command
+Removed official support for payload generation for PS1, Exe and pivot_winrm. These were open sourced on the github if anyone still wants to use it
+Removed crisismonitor's stop command. in support for the 'stop_task' command which can be used to stop any active tasks
+Removed 'shinject' command which auto executed a suspended process and injected a shellcode as it was redundant when compared to the more advanced 'shinject_exe' command
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 1.0 - Sicilian Defense
+
+======================================
+Ratel Server and Badger
+======================================
+
+Additions
+--------------------------------------
+1. Added DNS Over HTTPs Payload and Listener
+2. Added DOH debug log option. This can be used to enable or disable debug logs to validate the listener is working. The logs are append to the server logs
+3. Added HTTP/HTTPS Proxy option for DOH and HTTP badgers
+4. External C2 over Slack
+5. Added 'detect' command to hunt userlands hooks in a user provided DLL
+6. Added 'kerberoast' command and krb5decoder for decoding KRB5 ticket and converting it to hashcat
+7. Added 'icmp_ping' command
+8. Added 'wmiexec' command
+9. Added File Explorer in Commander with SMB support
+10. Updated Process Explorer with process search option and disabled sorting. Architecture of processes is also shown now
+11. Preview command now uses syscall to avoid detections on opening of file handle
+12. Added export profile support for click_scripts, webhook_listener, autosave, register_dll, register_pe, register_pe_inline and register_obj
+13. Renamed 'wmispawn' command to 'wmiquery'
+14. Riot Control supports DOH
+15. Updated Mitre map
+
+Improvements
+--------------------------------------
+1. Updated smb pivots to reuse named pipes upon disconnection
+2. The 'crisismonitor' command now shows user information on every logon event
+3. Replaced Camouflage with phish_creds and removed Camouflage code from the server
+4. Changed background color of Commander from #000e14 to #161a20
+5. Added option to Change terminal background from BRc4 Image to black screen
+6. New encrypt and sleep techniques added which are randomly switched on every sleep
+7. The 'ps' and 'psgrep' command also show architecture of the process
+8. Renamed Warmongers to Operators
+9. Commander now saves every payload under a new name as per their payload type i.e. doh/http/smb/tcp
+10. Updated loader to use new way to find the base address of the DLL in memory for reallocation
+11. Updated Listener to listen on localhost
+
+======================================
+Bug Fixes
+======================================
+1. Fixed crisis_monitor format output which returned extra EOF sometimes
+2. Fixed a minor printing bug for ipstats
+3. Fixed BOF to return null when a API/DLL is not found due to user error
+4. Fixed a shellcode injection bug where artifacts were left behind sometimes. Badger auto cleans up the injected shellcode post bootstrapping
+5. Fixed Sentinel and LdapSentinel output for hex values
+6. Fixed spawned child process to resume thread when reflection and shellcode injection failed to work
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.9 - Checkmate
+
+======================================
+Ratel Server and Badger
+======================================
+
+Additions
+--------------------------------------
+1. Updated multiple sleep functions to use syscalls with waitable objects
+2. Upgraded kernel32 and kernelbase hunters to avoid kerneltraps
+3. Updated Syscall hunter for various EDRs
+4. Added 'memdump' command
+5. Added 'addpriv' command
+6. Added 'applist' command
+7. Added 'preview' command
+8. Added 'fileinfo' command
+9. Added 'lookup' command
+10. Disabled Control Flow Guards where not required
+11. Replaced everything in the badger with Syscall Checkmate Debugger for the following:
+  1. NtAllocateVirtualMemory
+  2. NtFlushInstructionCache
+  3. NtProtectVirtualMemory
+  4. NtWriteVirtualMemory
+  5. NtCreateSection
+  6. NtMapViewOfSection
+  7. NtCreateThreadEx
+  8. NtQueueApcThread
+  9. NtResumeThread
+  10. NtAlertResumeThread
+  11. NtOpenProcess
+  12. NtSetInformationProcess
+  13. NtQueryInformationProcess
+  14. NtDuplicateObject
+  15. NtGetContextThread
+  16. NtSetContextThread
+  17. NtWaitForSingleObject
+  18. NtClose
+  19. NtTerminateThread
+  20. NtCreateEvent
+  21. NtSignalAndWaitForSingleObject
+  22. NtCreateTransaction
+  23. NtOpenFile
+  24. NtCreateFile
+  25. NtQuerySystemInformation
+  26. NtReadVirtualMemory
+  27. NtReadFile
+  28. NtQueryInformationFile
+
+======================================
+Bug Fixes
+======================================
+1. Enhanced the User experience for Ldap Sentinel
+2. Fixed the Ldap Sentinel bug for GUI which did not use inline injection when performing manual queries
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.8.0 - Warfare Tactics
+
+======================================
+Ratel Server and Badger
+======================================
+
+Additions
+--------------------------------------
+1. Added webhook functionality and added a seperate function to write websockets
+2. Updated loader to dynamically find obfuscated syscalls
+3. Converted virtualalloc in coffexec to obfuscated syscalls
+4. Coverted all reflective DLLs, Service and DLL payload generation to use obfuscated indirect syscalls
+5. Added Process Instrumentation callback patching for all loaders
+5. Added 'timeloop' command to run a given command for a dedicated number of times and seconds in a loop
+6. Added new process injection techniques for syscalls:
+    set_threadex
+      1. NtCreateThreadEx (Obfuscated Indirect Syscalls - x64 only)
+      2. NtQueueApcThread, NtResumeThread (Obfuscated Indirect Syscalls - x64 only)
+      3. NtQueueApcThread, NtAlertResumeThread (Obfuscated Indirect Syscalls - x64 only),
+    set_malloc
+      1. NtCreateSection, NtMapViewOfSection, RtlCopyMemory (Obfuscated Indirect Syscalls - x64 only)
+      2. NtAllocateVirtualMemory, NtProtectVirtualMemory, NtWriteVirtualMemory (Obfuscated Indirect Syscalls - x64 only)`,
+7. Added feature to change malleable profiles on the fly. Modified badgers will spawn under a new identity.
+8. SwitchC2 feature is removed and replaced with switch_profile
+9. Added prepend and append (malleable C2 profile)
+
+Enhancements
+--------------------------------------
+1. Added header support for socksbridge (domain fronting)
+2. Encrypted shellcode parameters with Rc4 encryption sent to the shellcode
+3. Replaced sleep with WaitForSingleObjectEx
+
+======================================
+Bug Fixes
+======================================
+1. Fixed rare download bug for TCP and SMB badgers
+2. Fixed token vault display bug
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.7 - Tsukuyomi
+
+======================================
+Ratel Server and Badger
+======================================
+
+Additions
+--------------------------------------
+1. Improved the Badger's loader to use NTAPIs
+2. Added 'Shadowcloak' feature which was rewritten with a custom MinidumpWriteDump
+3. Added sleep functionality to encrypt itself while sleeping and move the RX region to RW 
+4. Added 'NtCreateSection, NtMapViewOfSection, RtlCopyMemory' to set_malloc for reflective dll and shellcode execution
+5. Added 'ps_ex' command
+6. Added 'userinfo' command which displays user privileges and groups. Integrated 'id' and 'get_privs' command with 'userinfo'
+7. Added 'scstart' command to start a local or remote service over RPC
+8. Added 'patchetw' command to optionally patch ETW to disable hooks for NtQueueApcThread
+9. Added 'query_session' command for remote session queries
+10. Added 'local_sessions' command
+11. Added 'routes' command
+12. Added 'arp' command
+13. Added 'netstat' command
+14. Added 'shinject_ex' command
+15. Added 'sharescan' command
+16. Added 'schtquery' command to query detailed scheduled tasks
+17. Added service description and service trigger information to 'scquery' command
+18. Added 'sysinfo' and 'windowlist' commands
+19. Added 'getenv' command
+20. Added 'dnscache' command
+21. Added 'passpol' command
+22. Added 'keylogger' command
+23. Added 'Sentinel' command which can perform ldap query without creating a new process
+24. Added option for badgers to die if its unable to connect to the c2 - die_offline
+
+Enhancements
+--------------------------------------
+1. Updated 'impersonate' command to select user id instead of just usernames
+2. The 'ps' command shows more detailed output with module information
+3. Updated 'net' command which can now query users, groups and members of groups
+4. Updated service output with proper response codes as replacement for errors
+5. Replaced multiple msvcrt.dll functions with custom inline-functions
+6. Updated Download file's name to append the current time and hostname from where it was downloaded in the logs directory
+7. Updated Ldap Sentinel for process injection and lowered the size to 18kb instead of the earlier 38kb of RDLL
+8. Added more verbosity to ratel war room
+9. Replaced job counter (job-0) with new line addition for every command. The badger will seperate the output of every command by adding a line at the start and one at the end of the output
+10. Updated 'drivers' command to show metadata like company name and address loaded of the driver
+11. Updated formatting for 'wmispawn' command
+12. Updated 'list_modules' command with company name
+13. Updated MITRE graph
+14. Updated 'crisis_monitor' to run as an independent thread
+15. Updated 'sharpinline' to run as an independent thread
+16. Added affected_cmd and supported_cmd for process injections and ppid spoofing
+
+======================================
+Bug Fixes
+======================================
+1. Fixed badger count issue where logs were loading up in the same log for new connections on badger restoration
+2. Fixed Dynamic finding of OpenProcess
+4. Download fixed for shadowcloak over smb/tcp pivots
+5. Fixed screenshot upload with domain fronting
+6. Fixed some bugs in the 'ps' command
+7. Fixed memory leaks for the 'download' command
+8. Fixed 'samdump' bug for Server 2012
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.1.2 - Resurrection - Bug Fix
+
+======================================
+Bug Fixes
+======================================
+1. Fixed a bug in sharpinline where version v2 was not working with v4 CLR. Now Both v2 and v4 dotnet code can be run in v4 CLR unlike previously where it returned an error stating v2 is not supported in v4.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.1.1 - Resurrection - Beta Feature Release
+
+======================================
+Ratel Server and Badger
+======================================
+1. Added scstart command to start local and remote services using WinAPI
+
+======================================
+Bug Fixes
+======================================
+1. Fixed screenshot download over fronted domain
+2. Fixed process output listing for badgers which did not show other user processes sometimes 
+3. Removed trailing spaces in commands mistakenly added by the user in commander
+4. Added automatic addition of \\ in the 'cd' command
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.1 - Resurrection - Beta Feature Release
+
+======================================
+Ratel Server and Badger
+======================================
+1. Added shadowcloak feature which extracts lsass dump and reroutes the dump to server without touching disk
+
+======================================
+Bug Fixes
+======================================
+1. Fixed badger count issue where logs were loading up in the same log for new connections on badger restoration
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.0.3 - Resurrection - Bug Fix
+
+======================================
+Bug Fixes
+======================================
+1. Added patch to load png files instead of jpeg for badgers
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.0.2 - Resurrection - Bug Fix
+
+======================================
+Bug Fixes
+======================================
+1. Fixed Crisis monitor bugs to find attached battery
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6.0.1 - Resurrection - Bug Fix
+
+======================================
+Bug Fixes
+======================================
+1. Added ExitProcess to reflective dlls so that the process does not crash
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.6 - Resurrection
+
+======================================
+Commander
+======================================
+1. Added random listener name generation during new listener creation
+2. Added Bind IP drop down box instead of having to enter the IP manually
+3. Added option to auto-select bind host as the rotational host
+4. Added Payload Generation Architecture GUI support to the context menu of listener and to the payload profiler. Replaced buttons in the payload profiler with a dropdown box
+5. Added search and ldapquery option directly to the badgers terminal
+6. Modified help output on screen to show affected and supported cmds for every command
+7. Merged Scratchpad and Operators/Chat tablewidget
+8. Added dark faded colors to mark the payloads which are dead
+9. Added UTC to local date conversion support for last check in and useractivity
+10. Added autohide button which hides all dead badgers. Badgers marked as dead and exited will automatically be hidden when this is enabled.
+11. Removed Add URI since the core listener was enhanced to allow badgers to connect to any URI, and at the same time also providing the option to filter out the response to those URIs which can be done by adding custom html pages to a URI
+12. Added Load adjacent tab, exitthread and exitprocess option to the context menu of badger.
+13. Modified BadgerQParser to show pending commands. Command Queue will only show the main commands in queue instead of showing the full command with the file buffer (for file uploads/sharp/ps reflects)
+14. Added saving the last used folder in memory for saving files via Commander
+16. Badger's terminal will show more info, unlike before which only showed the PID and BID
+17. Added Export to CSV option to Useractivity. Useractivity shows MITRE mappings along with every command executed
+18. Single Commander file for all types of Linux distro
+
+======================================
+Ratel Server and Badger
+======================================
+1. Added position independent code for x86
+2. Added x86 reflective dlls for badger modules
+3. Added Token Vault feature which can store multiple stolen tokens using the 'grab_token' command
+4. Added Sharpinline command to execute C sharp code without new process generation
+5. Sharpreflect and Sharpinline now use a randomly generated appdomain everytime instead of the default app domain
+6. Added 'coffexec' which has heavy support for Beacon Object Files of Cobaltstrike. Supported internal APIs are BadgerDispatch, BadgerDispatchW, BadgerStrlen, BadgerWcslen, BadgerMemcpy, BadgerMemset, BadgerStrcmp, BadgerWcscmp, BadgerAtoi functions. Entrypoint for coffexec is coffee
+7. Added 'list_modules' command to list loaded DLLs in the current process or target process
+8. Added 'list_exports' command to list exports of a given DLL
+9. Added 'memhunt' command to hunt for memory regions in current or target process with any page permissions
+10. Added 'suspended_run' to create a new process in a suspeneded state
+11. Added 'crisis_monitor' feature which can add an event to monitor changes in power status, user login and log off for terminal session monitoring and more
+12. Added 'set_killdate' and 'get_killdate' commands to auto kill badger on a given date in the RFC822 format
+13. Added exit thread and exit process functionality. If a shellcode is injected in a process, the exitthread will only exit the thread and not the full process.
+14. Added more detailed information on the 'ps' command (process listing)
+15. Modified tcp scans to support port-range scanning and print output dynamically
+16. AMSI/ETW patching will now only patch if the CLR version is 2.0.
+17. Removed objexec, get/set_objexec since coffexec performs a better job at executing object files
+18. Updated help with supported and affected commands
+19. Added feature to mark dead badgers which do not connect back. This can be used to filter out dead badgers
+20. Removed Adversary Simulations code since Clickscripts replaces the Adversary Simulation option
+21. Added badger's connection notification to Socks (Boomerang)
+22. During payload/rdll injection, the badger will automatically find which is the current payload type: x86 or x64 validation, and generate payload according to the architecture for injection
+23. Added logging for psexec, upload and download which logs the name, path and hashes for every file uploaded or downloaded
+24. Added Brute ratel sample profile generator and parser which can be used with the '-sp' command
+25. Modified psreflect and sharpreflect with the new code. The newly generated code is only 30kb in size
+26. Fixed 'wmispawn' example in the help options
+27. Updated Go Compiler to 'go1.16.6 linux/amd64'
+28. Added RC4 encryption support alongside AES256 and RSA to encrypt selected sensitive strings in memory
+29. Added option in the ratel server to create sample configuration
+30. Changes were make to the command registration in badger profiles. Need an additional "arch":"x64" or "arch":"x86" in the profiler to validate the type of the payload command registered
+31. The 'dcsync_inject' command is now removed since there are already 'dcsync' and 'mimikatz' command, both of which can perform DCSync.
+
+======================================
+Bug Fixes
+======================================
+1. Added bug-fix to change payload-profiler password when listener password is changed.
+2. Fixed a bug which always showed 'regular' auth in the listeners table instead of the OTA where needed
+3. Fixed download percentage bug in badgers.
+4. Renamed spelling mistake of 'arguement' to 'argument' in the terminal commands
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.5.0.3 - Syndicate
+
+======================================
+Bug Fixes
+======================================
+1. Fixed 'Camouflage' bug where the Camouflage was not getting injected due to changes in the PE Header
+2. Fixed a bug in the 'autosave' feature which was printing 'profile not saved' even after saving the configuration file.
+3. Fixed a post response bug for deauthenticated badgers and custom root page.
+4. Fixed crashing of socksbridge upon taking an extremely long useragent
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.5 - Syndicate
+
+======================================
+Commander
+======================================
+1. Modifed user interface to make it a smoother experience for the user. Moved Downloads, LdapSentinel, AdvSim and other UI to dock widgets.
+2. Added Watchlist window for logging events, web activity, operators activity and chat window. Removed 'Archives' tab and integrated 'Downloads' and 'View Logs' tab seperately.
+3. Modified user inteface for Ldap Sentinel.
+4. Added Click Scripting feature to automate execution of badger commands in bulk.
+5. Removed samdump, shadowclone and other one-click tasks from right click of badger since these are one-click commands which can be executed directly from the badger's terminal or from Riot Control.
+6. Remapped error box popups to errors only prompting in the UI as a text. Added PowerShell payload generation capability which can be accessed from Commander's Payload profiler or by Right Clicking a listener.
+7. Added Splitters to resize dock widgets.
+8. Added Downloads broadcast feature. As soon as new files are downloaded, the downloads tab will popup automatically.
+9. Added 'Autosave' button to automate saving of Brute Ratel's configuration file. All badger initialization information will be stored in the config file inclusive of tokens used by badgers for authentication.
+10. Statistics are now moved to the bottom right part of the page
+
+======================================
+Ratel Server and Badger
+======================================
+1. Added custom exported function hunter in replacement of GetProcAddress. None of the badger commands use GetProcAddress anymore.
+2. Added PowerShell Payload generation capability which can be accessed from Commander's Payload profiler or by Right Clicking a listener.
+3. Added 'pivot_winrm' functionality which can be used pivot across systems using winrm without dropping any payload to disk. Badgers using pivot_winrm will be executed in memory.
+4. Added WMISpawn feature which can be configured to run with custom WMI namespace and user credentials to run WMI queries in memory without creating any new process.
+5. Ported Ldap Sentinel from clang to mingw. Reduced the size of reflective DLL from 245 kb to 38kb in memory
+6. Added 'raw query' mode for Ldap sentinel which can be used to perform raw ldap queries.
+7. Ported 'mimikatz' functionality. Mimikatz can be loaded with badger's loader with stripped PE Sections to avoid detection in memory.
+8. Bruteratel contains 2 customized versions of DCsync, one which uses tokens generated from passwords and one which uses process tokens. Both of them work independently from the 'mimikatz' command.
+9. Added portscan functionality to scan a given host with multiple port numbers.
+10. Added share enumeration feature which takes in a given hostname and can check for privileges on the host and show available shares.
+11. Added AMSI patching and EtwEventWrite patching to psreflect and sharpreflect commands; Fixed dotnet CLR loading prompt for for CLR 2.0 for psreflect/sharpreflect.
+12. Added new x64 Loader for RW+RX permissions. Modified Shellcode for VirtualAlloc+CreateThread. All reflective loaders were rewritten from scratch to avoid leaving any artefacts in memory.
+13. Added Click Scripting feature to load commands from a json file to automate execution of badger commands in bulk.
+14. Modified 'upload' command for enhanced upload speed.
+
+======================================
+Bug Fixes
+======================================
+1. Fixed Regsitry query for REG_BINARY which did not return binary text response. 
+2. Fixed bug where 'rootpage' was unable to load custom rootpage on the base URL of a listener.
+3. Fixed shellcode crashing on older windows 7 versions which did not have combase.dll. Replace combase.dll functionality from the functions in ole32.dll for windows 7, 2012 and 2008 servers.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes (minor update) for 0.4.2 - Chaos Theory
+
+======================================
+Ratel Server and Badger
+======================================
+1. Brute Ratel can now block non-microsoft DLLs from loading into the injected process. The dll_block and dll_unblock can respectively enable and disable DLL blockings into remote processes.
+
+======================================
+Bug Fixes
+======================================
+1. SMB pipe name in Edit Payload Profiler used to add "\\.\pipe\" automatically. In the current release, this will not be added directly. This is only for Edit Payload Profile option
+2. Earlier Listener names was able to use spaces, but this broke payload profiler which did not accept spaces. From this release, the spaces in listener name will be automatically replaced with a hyphen.
+3. There was a bug in the graphing script which incorrectly loaded the graphs for the listeners. This is now fixed in the current version
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Release notes for 0.4.1 - Chaos Theory
+
+======================================
+Commander
+======================================
+1. Added Adversay Simulation UI to Commander. Commander can load a simulation config from a json file via ratel server to load a set of commands for simulation. A sample configuration file and artefacts for APT33 group is stored in the simulations directory
+2. HTTP Payloads can be generated directly by right clicking the listener now. For every new listener created, a new payload profile will automatically be added to the payload profilers list.
+3. Listener creation has a direct option to add useragent, extra headers for payload and rotational redirectors.
+4. Moved listener auth to right click of listener->listener actions->view authentication.
+5. Added enter button to go to next line on the username/password page and the login button now accepts enter button.
+
+======================================
+Ratel Server and Badger
+======================================
+1. Added Adversary Simulation Profiler. A user can create a json based simulation profile which includes commands to simulate a threat actor
+2. Added SSL keys as mandatory in the command line parser.
+3. Changed the 'driver list' command to 'drivers'
+4. Added several process injection and memory allocation techniques. New commands 'set_malloc/get_malloc' and 'set_threadex/get_threadex' can be used to change memory allocation and execution artefacts.
+  - Memory Allocation for Process Injection
+    - VirtualAllocEx, WriteProcessMemory
+    - NtCreateSection, NtMapViewOfSection, RtlCopyMemory
+  - Thread Execution for allocated Memory
+    - CreateRemoteThread
+    - RtlCreateUserThread
+    - QueueUserAPC, ResumeThread
+    - QueueUserAPC, NtResumeThread
+    - QueueUserAPC, NtAlertResumeThread
+    - NtQueueApcThread, ResumeThread
+    - NtQueueApcThread, NtResumeThread
+    - NtQueueApcThread, NtAlertResumeThread
+5. Added 'scdivert' feature which can change the service binary path for an existing service. EDRs service configuration can be changed and the system can be rebooted to disable EDRs altogether. This will only work for those EDRs which do not hook their own registry to look for changes
+6. Added 'psgrep' feature which can search a process from process list and only return a specific process. The 'ps' command still exists if you want to take a look at all processes. This feature was added to quickly search for a process and inject a shellcode/payload config to that.
+7. Added 'ipstats' feature which returns a more detailed output than 'ipconfig' of windows. This command returns network related information including names of VPN adapters, their IP addresses, gateways and other DNS/Adapter information.
+8. Added contact_harvester command to extract and dump contacts from Outlook's Global Address List.
+9. Updated server conf sample profile to server_confs folder
+10. Creating a new listener via profile file or via GUI will now automatically create a payload profile for the same listener.
+11. Brute Ratel is now built for kali and ubuntu seperately since kali has the latest C++ libraries. You find both the versions in the Brute Ratel directory with the same naming convention.
+
+======================================
+Bug Fixes
+======================================
+1. Fixed Android Handler bug to read Unicode output from the websocket of ratel server
+2. Fixed Commander Handler bug to read Unicode output from the websocket of ratel server
+3. Fixed Ratel Server's bug to read Unicode output from the HTTP request of badgers
+4. Fixed error handling for the ratel server. Parses input in a more optimized and a faster way.
+5. Fixed ratel server crash for error handling.
